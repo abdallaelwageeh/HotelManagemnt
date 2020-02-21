@@ -54,17 +54,17 @@ namespace Helper
                 return "";
             }
         }
-        public static string PutAction(string address, ILogger logFunction, string content)
+        public static string PutAction(string address, ILogger logFunction, string content,bool flag=false)
         {
-            StringContent Content = new StringContent(content);
             try
             {
+                StringContent Content = new StringContent(JsonConvert.SerializeObject(new Message { value = content }), Encoding.UTF8, "application/json");
                 using (HttpResponseMessage response = Client.PutAsync(address, Content).GetAwaiter().GetResult())
                 {
                     if (response.IsSuccessStatusCode)
                     {
                         string responseContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                        return DecryptContent(responseContent);
+                        return DecryptContent(responseContent,flag);
                     }
                 }
                 return "";

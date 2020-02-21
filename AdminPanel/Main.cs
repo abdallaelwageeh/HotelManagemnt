@@ -16,8 +16,6 @@ namespace AdminPanel
         public Main()
         {
             InitializeComponent();
-            Task<string> task1 = Task.Factory.StartNew(() => Helper.SystemHelper.GetAction("Room",this,true));
-            task=task1.ContinueWith<List<Room>>((res) => SystemHelper.GenerateRoomsList(task1.Result));
         }
 
 
@@ -90,10 +88,7 @@ namespace AdminPanel
 
         private void RoomsBtn_Click(object sender, EventArgs e)
         {
-            if (task.IsCompleted)
-            {
-                StartWithPanel(new RoomView(task.Result));
-            }
+            StartWithPanel(new RoomView());
         }
 
         public void LogErrorToUser(Exception ex)

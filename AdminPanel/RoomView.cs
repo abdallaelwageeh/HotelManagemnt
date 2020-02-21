@@ -13,24 +13,17 @@ namespace AdminPanel
     {
         public delegate void PresentMessage(List<Room> Rooms);
         public PresentMessage Presenter;
-        List<Room> Rooms;
-        public RoomView(List<Room> rooms)
+        public RoomView()
         {
             InitializeComponent();
             Presenter = new PresentMessage(PresentData);
-            Rooms = rooms;
+            var task = Task.Factory.StartNew(() => SystemHelper.GenerateRoomsList(SystemHelper.GetAction("Room", this, true))).ContinueWith((res) => RoomsTable.Invoke(Presenter, res.Result));
         }
 
         private void PresentData(List<Room> Rooms)
         {
             RoomsTable.DataSource = Rooms;
         }
-
-        private void RoomView_Load(object sender, EventArgs e)
-        {
-            RoomsTable.DataSource = Rooms;
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             var insertRoom = new InsertNewRoom();
@@ -54,6 +47,26 @@ namespace AdminPanel
             {
                 string id = SystemHelper.EncryptContent(RoomsTable.CurrentRow.Cells[0].Value.ToString());
                 Task.Factory.StartNew(() => SystemHelper.GenerateRoomsList(SystemHelper.DeleteAction("Room", this, id, true))).ContinueWith((res) => this.RoomsTable.Invoke(Presenter, res.Result));
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (RoomsTable.CurrentRow!=null)
+            {
+                var room = new Room
+                {
+                    Id = int.Parse(RoomsTable.CurrentRow.Cells[0].Value.ToString()),
+                    Number = RoomsTable.CurrentRow.Cells[1].Value.ToString(),
+                    Capacity = int.Parse(RoomsTable.CurrentRow.Cells[3].Value.ToString()),
+                    Description = RoomsTable.CurrentRow.Cells[2].Value==null?"": RoomsTable.CurrentRow.Cells[2].Value.ToString(),
+                    ImagePath = RoomsTable.CurrentRow.Cells[6].Value == null ? "" : RoomsTable.CurrentRow.Cells[6].Value.ToString(),
+                    Price = RoomsTable.CurrentRow.Cells[4].Value.ToString(),
+                    TypeId = int.Parse(RoomsTable.CurrentRow.Cells[5].Value.ToString())
+                };
+                var UpdateRoom = new UpdateRoom(room);
+                ViewPanel.Controls.Add(UpdateRoom);
+                UpdateRoom.BringToFront();
             }
         }
     }

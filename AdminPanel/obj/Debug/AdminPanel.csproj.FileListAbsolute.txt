@@ -25,3 +25,4 @@ E:\ProjectsWorkSpace\projects\visual studio c#\2019\WorkTasks\HotelSystem\AdminP
 E:\ProjectsWorkSpace\projects\visual studio c#\2019\WorkTasks\HotelSystem\AdminPanel\bin\Debug\Newtonsoft.Json.dll
 E:\ProjectsWorkSpace\projects\visual studio c#\2019\WorkTasks\HotelSystem\AdminPanel\bin\Debug\Newtonsoft.Json.xml
 E:\ProjectsWorkSpace\projects\visual studio c#\2019\WorkTasks\HotelSystem\AdminPanel\obj\Debug\AdminPanel.InsertNewRoom.resources
+E:\ProjectsWorkSpace\projects\visual studio c#\2019\WorkTasks\HotelSystem\AdminPanel\obj\Debug\AdminPanel.UpdateRoom.resources

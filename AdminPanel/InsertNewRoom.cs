@@ -14,7 +14,6 @@ namespace AdminPanel
     {
         public delegate void PresentMessage(List<Helper.Models.Type> types);
         public PresentMessage Presenter;
-        public List<Room> Rooms{ get; set; }
         public InsertNewRoom()
         {
             Presenter=new PresentMessage(PresentData);
@@ -43,15 +42,7 @@ namespace AdminPanel
                     }));
                 var control = this.Parent.Controls["RoomsTable"] as DataGridView;
                 var form=control.Parent.Parent as RoomView;
-                try
-                {
-                    var task = Task<List<Room>>.Factory.StartNew(() => SystemHelper.GenerateRoomsList(SystemHelper.PostAction("Room", content,this,true))).ContinueWith((res) => control.Invoke(form.Presenter, res.Result));
-                }
-                catch (HttpRequestException)
-                {
-                    MessageBox.Show("Failed To Save Data !!!! Please Check You Connection","Connection",MessageBoxButtons.OK,MessageBoxIcon.Error);
-                }
-                catch (Exception) { };
+                var task = Task<List<Room>>.Factory.StartNew(() => SystemHelper.GenerateRoomsList(SystemHelper.PostAction("Room", content,this,true))).ContinueWith((res) => control.Invoke(form.Presenter, res.Result));
                 control.BringToFront();
                 this.Dispose();
             }
@@ -68,7 +59,6 @@ namespace AdminPanel
                 return true;    
             }
         }
-
         public void LogErrorToUser(Exception ex)
         {
             MessageBox.Show("Please Check Your Connection", "Connection", MessageBoxButtons.OK, MessageBoxIcon.Error);
