@@ -214,6 +214,7 @@
             this.HomeBtn.TabIndex = 1;
             this.HomeBtn.Text = "Home";
             this.HomeBtn.UseVisualStyleBackColor = true;
+            this.HomeBtn.Click += new System.EventHandler(this.HomeBtn_Click);
             // 
             // UpperPanel
             // 

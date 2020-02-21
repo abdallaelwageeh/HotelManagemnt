@@ -1,69 +1,100 @@
-﻿using Helper.Models;
+﻿using Helper.Interfaces;
+using Helper.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-
 namespace Helper
 {
     public static class SystemHelper
     {
         public static HttpClient Client = new HttpClient() { BaseAddress = new Uri(@"https://localhost:44370/api/") };
-        public static string  GetAction(string address,bool flag=false)
+        public static string  GetAction(string address, ILogger logFunction,bool flag=false)
         {
-            using (HttpResponseMessage response = Client.GetAsync(address).GetAwaiter().GetResult())
+            try
             {
-                if (response.IsSuccessStatusCode)
+                using (HttpResponseMessage response = Client.GetAsync(address).GetAwaiter().GetResult())
                 {
-                    string responseContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                    return DecryptContent(responseContent,flag);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string responseContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                        return DecryptContent(responseContent, flag);
+                    }
                 }
+                return "";
             }
-            return "";
+            catch (Exception ex)
+            {
+                logFunction.LogErrorToUser(new HttpRequestException("You Have Problem With Yout Api Please Check Connection Ex:" + ex));
+                return "";
+            }
         }
-        public static string PostAction(string address,string content,bool flag=false)
+        public static string PostAction(string address,string content, ILogger logFunction, bool flag=false)
         {
 
             StringContent Content = new StringContent(JsonConvert.SerializeObject(new Message {value=content}),Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = Client.PostAsync(new Uri(Client.BaseAddress.ToString()+address),Content).GetAwaiter().GetResult())
+            try
             {
-                if (response.IsSuccessStatusCode)
+                using (HttpResponseMessage response = Client.PostAsync(new Uri(Client.BaseAddress.ToString() + address), Content).GetAwaiter().GetResult())
                 {
-                    string responseContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                    return DecryptContent(responseContent,flag);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string responseContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                        return DecryptContent(responseContent, flag);
+                    }
                 }
+                return "";
             }
-            return "";
+            catch (Exception ex)
+            {
+                logFunction.LogErrorToUser(new HttpRequestException("You Have Problem With Yout Api Please Check Connection Ex:" + ex));
+                return "";
+            }
         }
-        public static string PutAction(string address, string content)
+        public static string PutAction(string address, ILogger logFunction, string content)
         {
             StringContent Content = new StringContent(content);
-            using (HttpResponseMessage response = Client.PutAsync(address, Content).GetAwaiter().GetResult())
+            try
             {
-                if (response.IsSuccessStatusCode)
+                using (HttpResponseMessage response = Client.PutAsync(address, Content).GetAwaiter().GetResult())
                 {
-                    string responseContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                    return DecryptContent(responseContent);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string responseContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                        return DecryptContent(responseContent);
+                    }
                 }
+                return "";
             }
-            return "";
+            catch (Exception ex)
+            {
+                logFunction.LogErrorToUser(new HttpRequestException("You Have Problem With Yout Api Please Check Connection Ex:" + ex));
+                return "";
+            }
         }
-        public static string DeleteAction(string address)
+        public static string DeleteAction(string address, ILogger logFunction,string content,bool flag=false)
         {
-            using (HttpResponseMessage response = Client.DeleteAsync(address).GetAwaiter().GetResult())
+            try
             {
-                if (response.IsSuccessStatusCode)
+                StringContent Content = new StringContent(JsonConvert.SerializeObject(new Message { value = content }), Encoding.UTF8, "application/json");
+                using (HttpResponseMessage response = Client.SendAsync(new HttpRequestMessage(HttpMethod.Delete,new Uri(Client.BaseAddress.ToString() + address)){Content = Content}).GetAwaiter().GetResult())
                 {
-                    string responseContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                    return DecryptContent(responseContent);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string responseContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                        return DecryptContent(responseContent,flag);
+                    }
                 }
+                return "";
             }
-            return "";
+            catch (Exception ex)
+            {
+                logFunction.LogErrorToUser(new HttpRequestException("You Have Problem With Yout Api Please Check Connection Ex:" + ex));
+                return "";
+            }
         }
         public static string EncryptContent(string content)
         {

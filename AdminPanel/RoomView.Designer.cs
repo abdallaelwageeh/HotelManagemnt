@@ -81,6 +81,7 @@
             this.button4.TabIndex = 44;
             this.button4.Text = "Refresh";
             this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.LoadDataFromApi);
             // 
             // button3
             // 
@@ -94,6 +95,7 @@
             this.button3.TabIndex = 43;
             this.button3.Text = "Delete Room";
             this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button2
             // 
@@ -139,7 +141,7 @@
             this.RoomsTable.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.RoomsTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.RoomsTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.RoomsTable.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.RoomsTable.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             this.RoomsTable.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;

@@ -1,4 +1,5 @@
 ﻿using Helper;
+using Helper.Interfaces;
 using Helper.Models;
 using Newtonsoft.Json;
 using System;
@@ -9,13 +10,13 @@ using System.Windows.Forms;
 
 namespace AdminPanel
 {
-    public partial class Main : Form
+    public partial class Main : Form,ILogger
     {
         Task<List<Room>> task;
         public Main()
         {
             InitializeComponent();
-            Task<string> task1 = Task.Factory.StartNew(() => Helper.SystemHelper.GetAction("Room",true));
+            Task<string> task1 = Task.Factory.StartNew(() => Helper.SystemHelper.GetAction("Room",this,true));
             task=task1.ContinueWith<List<Room>>((res) => SystemHelper.GenerateRoomsList(task1.Result));
         }
 
@@ -93,6 +94,16 @@ namespace AdminPanel
             {
                 StartWithPanel(new RoomView(task.Result));
             }
+        }
+
+        public void LogErrorToUser(Exception ex)
+        {
+            MessageBox.Show("Please Check Your Connection","Connection",MessageBoxButtons.OK,MessageBoxIcon.Error);
+        }
+
+        private void HomeBtn_Click(object sender, EventArgs e)
+        {
+            StartWithPanel(new MainView());
         }
     }
 }

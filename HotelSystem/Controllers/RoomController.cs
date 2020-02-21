@@ -58,11 +58,11 @@ namespace HotelSystem.Controllers
         }
 
         // PUT: api/Room/5
-        public HttpResponseMessage Put([FromBody]string requestcontent)
+        public HttpResponseMessage Put([FromBody]Message requestcontent)
         {
             try
             {
-                Room room = JsonConvert.DeserializeObject<Room>(SystemHelper.DecryptContent(requestcontent));
+                Room room = JsonConvert.DeserializeObject<Room>(SystemHelper.DecryptContent(requestcontent.Value));
                 if (context.Rooms.Update(room))
                 {
                     context.SaveChanges();
@@ -82,11 +82,12 @@ namespace HotelSystem.Controllers
         }
 
         // DELETE: api/Room/5
-        public HttpResponseMessage Delete(string requestcontent)
+        [HttpDelete]
+        public HttpResponseMessage Delete([FromBody]Message requestcontent)
         {
             try
             {
-                if (context.Rooms.Delete(int.Parse(SystemHelper.DecryptContent(requestcontent))))
+                if (context.Rooms.Delete(int.Parse(SystemHelper.DecryptContent(requestcontent.Value))))
                 {
                     context.SaveChanges();
                     string rooms = SystemHelper.EncryptContent(JsonConvert.SerializeObject(context.Rooms.GetAll()));

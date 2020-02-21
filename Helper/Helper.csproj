@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\ILogger.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Guest.cs" />
     <Compile Include="Models\Message.cs" />
