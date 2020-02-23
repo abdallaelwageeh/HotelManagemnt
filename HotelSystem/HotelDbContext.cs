@@ -33,10 +33,11 @@ public class HotelDBInitializer : DropCreateDatabaseAlways<HotelDbContext>
         context.Types.AddRange(defaultTypes);
 
         IList<HotelSystem.Models.Room> defaultRooms = new List<Room>();
-        defaultRooms.Add(new HotelSystem.Models.Room() { Number = "1", Capacity = 5, Price = "5000", Description = "", TypeId = 1 });
-        defaultRooms.Add(new HotelSystem.Models.Room() { Number = "2", Capacity = 3, Price = "3000", Description = "", TypeId = 2});
-        defaultRooms.Add(new HotelSystem.Models.Room() { Number = "3", Capacity = 1, Price = "1550", Description = "" ,TypeId=3});
+        defaultRooms.Add(new HotelSystem.Models.Room() { Number = "1", Capacity = 5, Price = "5000", Description = "IT IS AMAZING APARTMENT", TypeId = 1 });
+        defaultRooms.Add(new HotelSystem.Models.Room() { Number = "2", Capacity = 3, Price = "3000", Description = "HELLO FOR YOUR HOME !!", TypeId = 2,IsReserved=true});
+        defaultRooms.Add(new HotelSystem.Models.Room() { Number = "3", Capacity = 1, Price = "1550", Description = "WELCOME TO OUR SYSTEM", TypeId=3});
         context.Rooms.AddRange(defaultRooms);
+        context.Guests.Add(new Guest {FirstName="Abdaullah",MiddleName="Mahmoud",Email="AbdallaElwageeh@yahoo.com",Mobile="01067926393",Password="Abdalla"});
         base.Seed(context);
     }
 }

@@ -18,7 +18,7 @@ namespace AdminPanel
         {
             Presenter=new PresentMessage(PresentData);
             InitializeComponent();
-            var task = Task.Factory.StartNew(() => SystemHelper.GenerateTypeList(SystemHelper.GetAction("Type",this,true))).ContinueWith((res) => TypeId.Invoke(Presenter, res.Result));
+            var task = Task.Factory.StartNew(() => SystemHelper.GenerateTypeList(SystemHelper.GetAction("Type",true, this))).ContinueWith((res) => TypeId.Invoke(Presenter, res.Result));
         }
         public void PresentData(List<Helper.Models.Type> Types)
         {

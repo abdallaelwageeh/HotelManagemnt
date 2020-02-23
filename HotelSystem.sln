@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helper", "Helper\Helper.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminPanel", "AdminPanel\AdminPanel.csproj", "{F49E04CD-5889-490E-8C61-1BE3798F4650}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelReservationSystem", "HotelReservationSystem\HotelReservationSystem.csproj", "{E9E20663-F236-47CB-80CA-9F4036E928B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{F49E04CD-5889-490E-8C61-1BE3798F4650}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F49E04CD-5889-490E-8C61-1BE3798F4650}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F49E04CD-5889-490E-8C61-1BE3798F4650}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9E20663-F236-47CB-80CA-9F4036E928B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9E20663-F236-47CB-80CA-9F4036E928B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9E20663-F236-47CB-80CA-9F4036E928B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9E20663-F236-47CB-80CA-9F4036E928B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

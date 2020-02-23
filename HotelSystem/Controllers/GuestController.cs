@@ -5,52 +5,78 @@ using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Helper.Models;
 
 namespace HotelSystem.Controllers
 {
     public class GuestController : ApiController
     {
         private UnitOfWork context = new UnitOfWork();
-        // GET: api/Guest
-        public string Get()
-        {
-            string content = JsonConvert.SerializeObject(context.Guests.GetAllToList());
-            return SystemHelper.EncryptContent(content);
-        }
-
-        // GET: api/Guest/5
-        public HttpResponseMessage Get(string requestcontent)
+        [HttpPost]
+        [Route("api/Authentication")]
+        public HttpResponseMessage Authentication([FromBody]Message requestcontent)
         {
             try
             {
-                string content = JsonConvert.SerializeObject(context.Guests.GetById(int.Parse(SystemHelper.DecryptContent(requestcontent))));
-                return Request.CreateResponse(HttpStatusCode.OK, SystemHelper.EncryptContent(content));
+                var user =JsonConvert.DeserializeObject<UserLogin>(SystemHelper.DecryptContent(requestcontent.Value));
+                var userInfo = context.Guests.CheckGuest(user);
+                if (userInfo!=null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, SystemHelper.EncryptContent(userInfo.FirstName));
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                }
+                
             }
-            catch (System.Exception)
+            catch (System.Exception e)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, "I Guess You Send any Data Except Id");
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "I Guess You Send any Data Except Id");
+            }
+        }
+        [HttpPost]
+        [Route("api/GetReservationsForGuest")]
+        public HttpResponseMessage GetReservationsForGuest([FromBody]Message requestcontent)
+        {
+            try
+            {
+                var userInfo = context.Guests.GetByEmail(requestcontent.Value);
+                if (userInfo != null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, SystemHelper.EncryptContent(JsonConvert.SerializeObject(userInfo.Reservations)));
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                }
+
+            }
+            catch (System.Exception e)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "I Guess You Send any Data Except Id");
             }
         }
 
         // POST: api/Guest
-        public HttpResponseMessage Post([FromBody]string requestcontent)
+        public HttpResponseMessage Post([FromBody]Message requestcontent)
         {
             try
             {
-                Guest guest = JsonConvert.DeserializeObject<Guest>(SystemHelper.DecryptContent(requestcontent));
-                if (context.Guests.Insert(guest))
+                Models.Guest guest = JsonConvert.DeserializeObject<Models.Guest>(SystemHelper.DecryptContent(requestcontent.Value));
+                if (context.Guests.GetByEmail(guest.Email)==null&&context.Guests.Insert(guest))
                 {
                     context.SaveChanges();
-                    return Request.CreateResponse(HttpStatusCode.OK, "Guest Is Inserted");
+                    return Request.CreateResponse(HttpStatusCode.OK, SystemHelper.EncryptContent("Guest Is Inserted"));
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, "You Send Guest Object With Null Data");
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, SystemHelper.EncryptContent("You Send Guest Object With Null Data"));
                 }
             }
-            catch (System.Exception)
+            catch (System.Exception e)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, "You Send Object With Different Type Than Guest");
+                return Request.CreateResponse(HttpStatusCode.BadRequest, e);
             }
         }
 
@@ -59,7 +85,7 @@ namespace HotelSystem.Controllers
         {
             try
             {
-                Guest guest = JsonConvert.DeserializeObject<Guest>(SystemHelper.DecryptContent(requestcontent));
+                Models.Guest guest = JsonConvert.DeserializeObject<Models.Guest>(SystemHelper.DecryptContent(requestcontent));
                 if (context.Guests.Update(guest))
                 {
                     context.SaveChanges();

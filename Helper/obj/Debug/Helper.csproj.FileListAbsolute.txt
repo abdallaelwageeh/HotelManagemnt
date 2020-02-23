@@ -2,7 +2,6 @@ E:\ProjectsWorkSpace\projects\visual studio c#\2019\WorkTasks\HotelSystem\Helper
 E:\ProjectsWorkSpace\projects\visual studio c#\2019\WorkTasks\HotelSystem\Helper\bin\Debug\Helper.pdb
 E:\ProjectsWorkSpace\projects\visual studio c#\2019\WorkTasks\HotelSystem\Helper\obj\Debug\Helper.dll
 E:\ProjectsWorkSpace\projects\visual studio c#\2019\WorkTasks\HotelSystem\Helper\obj\Debug\Helper.pdb
-E:\ProjectsWorkSpace\projects\visual studio c#\2019\WorkTasks\HotelSystem\Helper\obj\Debug\Helper.csprojAssemblyReference.cache
 E:\ProjectsWorkSpace\projects\visual studio c#\2019\WorkTasks\HotelSystem\Helper\bin\Debug\Newtonsoft.Json.dll
 E:\ProjectsWorkSpace\projects\visual studio c#\2019\WorkTasks\HotelSystem\Helper\bin\Debug\Newtonsoft.Json.xml
 E:\ProjectsWorkSpace\projects\visual studio c#\2019\WorkTasks\HotelSystem\Helper\obj\Debug\Helper.csproj.CopyComplete

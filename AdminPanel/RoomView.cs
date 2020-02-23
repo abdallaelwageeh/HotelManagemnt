@@ -17,7 +17,7 @@ namespace AdminPanel
         {
             InitializeComponent();
             Presenter = new PresentMessage(PresentData);
-            var task = Task.Factory.StartNew(() => SystemHelper.GenerateRoomsList(SystemHelper.GetAction("Room", this, true))).ContinueWith((res) => RoomsTable.Invoke(Presenter, res.Result));
+            var task = Task.Factory.StartNew(() => SystemHelper.GenerateRoomsList(SystemHelper.GetAction("Room", true, this))).ContinueWith((res) => RoomsTable.Invoke(Presenter, res.Result));
         }
 
         private void PresentData(List<Room> Rooms)
@@ -32,7 +32,7 @@ namespace AdminPanel
         }
         private void LoadDataFromApi(object sender, EventArgs e)
         {
-            Task.Factory.StartNew(() => SystemHelper.GenerateRoomsList(SystemHelper.GetAction("Room",this,true))).ContinueWith((res) => this.RoomsTable.Invoke(Presenter, res.Result));
+            Task.Factory.StartNew(() => SystemHelper.GenerateRoomsList(SystemHelper.GetAction("Room",true, this))).ContinueWith((res) => this.RoomsTable.Invoke(Presenter, res.Result));
             RoomsTable.BringToFront();
         }
 
@@ -46,7 +46,7 @@ namespace AdminPanel
             if (RoomsTable.CurrentRow!=null)
             {
                 string id = SystemHelper.EncryptContent(RoomsTable.CurrentRow.Cells[0].Value.ToString());
-                Task.Factory.StartNew(() => SystemHelper.GenerateRoomsList(SystemHelper.DeleteAction("Room", this, id, true))).ContinueWith((res) => this.RoomsTable.Invoke(Presenter, res.Result));
+                Task.Factory.StartNew(() => SystemHelper.GenerateRoomsList(SystemHelper.DeleteAction("Room", id, this, true))).ContinueWith((res) => this.RoomsTable.Invoke(Presenter, res.Result));
             }
         }
 

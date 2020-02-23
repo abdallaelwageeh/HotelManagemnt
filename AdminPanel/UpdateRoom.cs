@@ -19,7 +19,7 @@ namespace AdminPanel
             UpdatedRoom = room;
             Presenter = new PresentMessage(PresentData);
             InitializeComponent();
-            var task = Task.Factory.StartNew(() => SystemHelper.GenerateTypeList(SystemHelper.GetAction("Type", this, true))).ContinueWith((res) => TypeId.Invoke(Presenter, res.Result));
+            var task = Task.Factory.StartNew(() => SystemHelper.GenerateTypeList(SystemHelper.GetAction("Type", true, this))).ContinueWith((res) => TypeId.Invoke(Presenter, res.Result));
             FillAllFields();
         }
         public void PresentData(List<Helper.Models.Type> Types)
@@ -66,7 +66,7 @@ namespace AdminPanel
                 UpdatedRoom.TypeId = int.Parse(TypeId.SelectedValue.ToString());
                 UpdatedRoom.ImagePath = ImagePath.Text;
                 String content = SystemHelper.EncryptContent(JsonConvert.SerializeObject(UpdatedRoom));
-                var task = Task.Factory.StartNew(() => SystemHelper.GenerateRoomsList(SystemHelper.PutAction("Room", this, content, true))).ContinueWith((res) => control.Invoke(form.Presenter, res.Result));
+                var task = Task.Factory.StartNew(() => SystemHelper.GenerateRoomsList(SystemHelper.PutAction("Room", content, this, true))).ContinueWith((res) => control.Invoke(form.Presenter, res.Result));
                 control.BringToFront();
                 this.Dispose();
             }

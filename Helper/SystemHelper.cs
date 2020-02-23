@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
@@ -12,7 +13,7 @@ namespace Helper
     public static class SystemHelper
     {
         public static HttpClient Client = new HttpClient() { BaseAddress = new Uri(@"https://localhost:44370/api/") };
-        public static string  GetAction(string address, ILogger logFunction,bool flag=false)
+        public static string  GetAction(string address, bool flag = false, ILogger logFunction=null)
         {
             try
             {
@@ -32,7 +33,7 @@ namespace Helper
                 return "";
             }
         }
-        public static string PostAction(string address,string content, ILogger logFunction, bool flag=false)
+        public static string PostAction(string address,string content, ILogger logFunction = null, bool flag=false)
         {
 
             StringContent Content = new StringContent(JsonConvert.SerializeObject(new Message {value=content}),Encoding.UTF8, "application/json");
@@ -54,7 +55,7 @@ namespace Helper
                 return "";
             }
         }
-        public static string PutAction(string address, ILogger logFunction, string content,bool flag=false)
+        public static string PutAction(string address, string content, ILogger logFunction = null, bool flag=false)
         {
             try
             {
@@ -75,7 +76,7 @@ namespace Helper
                 return "";
             }
         }
-        public static string DeleteAction(string address, ILogger logFunction,string content,bool flag=false)
+        public static string DeleteAction(string address,  string content, ILogger logFunction = null, bool flag=false)
         {
             try
             {
@@ -182,7 +183,6 @@ namespace Helper
             // Return the encrypted bytes from the memory stream.
             return encrypted;
         }
-
         public static List<Room> GenerateRoomsList(string text)
         {
             switch (text)

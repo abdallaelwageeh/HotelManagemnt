@@ -3,10 +3,10 @@ using HotelSystem.BusinessLayer;
 using HotelSystem.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+
 
 namespace HotelSystem.Controllers
 {
@@ -41,7 +41,7 @@ namespace HotelSystem.Controllers
         {
             try
             {
-                Room room = JsonConvert.DeserializeObject<Room>(SystemHelper.DecryptContent(requestcontent.Value));
+                Models.Room room = JsonConvert.DeserializeObject<Models.Room>(SystemHelper.DecryptContent(requestcontent.Value));
                 if (context.Rooms.Insert(room))
                 {
                     context.SaveChanges();
@@ -51,6 +51,47 @@ namespace HotelSystem.Controllers
                 else
                 {
                     return Request.CreateResponse(HttpStatusCode.BadRequest, "You Send Room Object With Null Data");
+                }
+            }
+            catch (System.Exception e)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "You Send Object With Different Type Than Room");
+            }
+        }
+        [HttpPost]
+        [Route("api/ReserveRoom")]
+        public HttpResponseMessage ReserveRoom([FromBody]Message requestcontent)
+        {
+            try
+            {
+                var reservation = JsonConvert.DeserializeObject<Helper.Models.Reservation >(SystemHelper.DecryptContent(requestcontent.Value));
+                lock (Key)
+                {
+                    try
+                    {
+                        var currentroom = context.Rooms.GetById(reservation.Room.Id);
+                        var currenGuest = context.Guests.GetByEmail(reservation.UserName);
+                        if (currenGuest != null && currentroom != null)
+                        {
+                            currentroom.GuestId = currenGuest.Id;
+                            currentroom.IsReserved = true;
+                            context.Rooms.Update(currentroom);
+                            currenGuest.Reservations.Add(currentroom);
+                            context.Guests.Update(currenGuest);
+                            context.SaveChanges();
+                            //List<Room> rooms=new List<Room>().AddRange(currenGuest.Reservations)
+                            string rooms = SystemHelper.EncryptContent(JsonConvert.SerializeObject(currenGuest.Reservations));
+                            return Request.CreateResponse(HttpStatusCode.OK, rooms);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest, "You Send Room Object With Null Data");
+                        }
+                    }
+                    catch (System.Exception e)
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, e);
+                    }
                 }
             }
             catch (System.Exception e)

@@ -22,7 +22,7 @@ namespace HotelSystem.Models
         [StringLength(500)]
         public string Address { get; set; }
         [Required]
-        [StringLength(10)]
+        [StringLength(14)]
         public string Mobile { get; set; }
         [StringLength(14)]
         public string NationalityId { get; set; }
@@ -31,6 +31,6 @@ namespace HotelSystem.Models
         public string Email { get; set; }
         [Required]
         public string Password { get; set; }
-        public ICollection<Room> Reservations { get; set; }
+        public virtual ICollection<Room> Reservations { get; set; }
     }
 }

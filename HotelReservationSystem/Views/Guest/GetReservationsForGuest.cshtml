@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Helper.Models.Room>
+@{
+    ViewBag.Title = "GetReservationsForGuest";
+}
+<h2>My ReserVations</h2>
+<div class="container">
+    <div class="row" id="ads">
+        @foreach (var item in Model)
+        {
+            <!-- Category Card -->
+            <div class="col-md-4">
+                <div class="card rounded">
+                    <div class="card-image">
+                        <span class="card-notify-year">@item.Number</span>
+                        <img class="img-fluid" src="~/Images/Room.Jpg" alt="Alternate Text" height="300" width="350" />
+                    </div>
+                    <div class="card-image-overlay m-auto">
+                        <span class="card-detail-badge">Capacity : @item.Capacity</span>
+                        <span class="card-detail-badge">Price : @item.Price</span>
+                        <span class="card-detail-badge">Reserved : @item.IsReserved</span>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="ad-title m-auto">
+                            <h5>@item.Description</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
